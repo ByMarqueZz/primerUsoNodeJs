@@ -6,10 +6,10 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 var users = 0;
+var usuariosConectados = [];
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
-
 
 io.on('connection', (socket) => {
     users++;
@@ -18,13 +18,17 @@ io.on('connection', (socket) => {
         users--;
         console.log('a user disconnected, hay ' + users + ' usuarios conectados');
     });
-    socket.on('chat message', (msg) => {
-        console.log('message: ' + msg);
+    // socket.on('chat message', (msg) => {
+    //     console.log('message: ' + msg);
+    // });
+    socket.on('nombre', (nombre) => {
+        console.log('nombre: ' + nombre);
+        usuariosConectados.push(nombre);
+        io.emit('usuarios', usuariosConectados);
+        nombre = '';
     });
 });
 
-
-
-server.listen(3000, () => {
-  console.log('listening on *:3000');
+server.listen(3001, () => {
+  console.log('listening on *:3001');
 });

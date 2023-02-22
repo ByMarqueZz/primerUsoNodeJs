@@ -29,12 +29,16 @@
   form.addEventListener('submit', function(e) {
     e.preventDefault();
     if (input.value) {
-      socket.emit('chat message', input.value);
-      let li = document.createElement('li');
-        li.innerHTML = input.value;
-        document.getElementById('messages').appendChild(li);
-        input.value = '';
+      socket.emit('nombre', input.value);
     }
+    });
+    socket.on('usuarios', (usuariosConectados) => {
+      document.getElementById('messages').innerHTML = '';
+      usuariosConectados.forEach(usuario => {
+        let li = document.createElement('li');
+        li.innerHTML = usuario;
+        document.getElementById('messages').appendChild(li);
+      });
     });
     </script>
   </body>
